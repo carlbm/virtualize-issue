@@ -1,0 +1,84 @@
+﻿@page "/fetchdata"
+@using Virtualize.Shared
+@inject HttpClient Http
+
+<PageTitle>Weather forecast</PageTitle>
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (forecasts.Count == 0)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container">
+    <Virtualize Items="forecasts" ItemSize="95" OverscanCount="5" Context="item">
+        <div class="wrapper" >
+            <div class="date">@item.Date.ToShortDateString()</div>
+            <div class="summary-area">
+                <div class="icon-group">
+                    <MatTooltip Style="font-size: 12px;" Tooltip="This is a tooltip">
+                        <span @ref="@context.Current" class="icon">
+                                <img width="20" height="20" />
+                        </span>
+                    </MatTooltip>
+                    
+                </div>
+                <div class="summary-ellipsize">
+                    <span class="summary-text">
+                        @item.Summary
+                    </span>
+                </div>
+            </div>
+        </div>
+    </Virtualize>
+    </div>
+    
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in forecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<WeatherForecast> forecasts = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        forecasts.AddRange(result);
+        
+    }
+}
